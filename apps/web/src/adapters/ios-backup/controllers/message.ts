@@ -5,43 +5,43 @@ import type {
 	GetGreetingMessageListResponse,
 	GetMessageListRequest,
 } from "@/adapters/adapter.ts";
-import type { ChatroomVoipMessageEntity } from "@/components/message/chatroom-voip-message.tsx";
-import type { ContactMessageEntity } from "@/components/message/contact-message.tsx";
-import type { ImageMessageEntity } from "@/components/message/image-message.tsx";
-import type { LocationMessageEntity } from "@/components/message/location-message.tsx";
-import type { MailMessageEntity } from "@/components/message/mail-message.tsx";
-import type { MicroVideoMessageEntity } from "@/components/message/micro-video-message.tsx";
-import type { StickerMessageEntity } from "@/components/message/sticker-message.tsx";
-import type { SystemExtendedMessageEntity } from "@/components/message/system-extended-message.tsx";
-import type { SystemMessageEntity } from "@/components/message/system-message.tsx";
-import type { VerityMessageEntity } from "@/components/message/verify-message.tsx";
-import type { VideoMessageEntity } from "@/components/message/video-message.tsx";
-import type { VoiceMessageEntity } from "@/components/message/voice-message.tsx";
-import type { VoipMessageEntity } from "@/components/message/voip-message.tsx";
-import type { WeComContactMessageEntity } from "@/components/message/wecom-contact-message.tsx";
-import type { OpenMessageEntity } from "@/components/open-message/open-message.tsx";
 import {
 	BasicMessageType,
+	type ChatroomVoipMessageEntity,
 	type ChatroomVoipMessageType,
 	type ChatType,
+	type ContactMessageEntity,
 	type ContactMessageType,
+	type ImageMessageEntity,
 	type ImageMessageType,
+	type LocationMessageEntity,
 	type LocationMessageType,
+	type MailMessageEntity,
 	type MailMessageType,
 	MessageDirection,
 	type MessageType,
 	MessageTypeEnum,
+	type MicroVideoMessageEntity,
 	type MicroVideoMessageType,
+	type OpenMessageEntity,
 	type OpenMessageType,
+	type StickerMessageEntity,
 	type StickerMessageType,
+	type SystemExtendedMessageEntity,
 	type SystemExtendedMessageType,
+	type SystemMessageEntity,
 	type SystemMessageType,
 	type TextMessageType,
 	type UserType,
+	type VerityMessageEntity,
 	type VerityMessageType,
+	type VideoMessageEntity,
 	type VideoMessageType,
+	type VoiceMessageEntity,
 	type VoiceMessageType,
+	type VoipMessageEntity,
 	type VoipMessageType,
+	type WeComContactMessageEntity,
 	type WeComContactMessageType,
 } from "@/schema";
 import {
