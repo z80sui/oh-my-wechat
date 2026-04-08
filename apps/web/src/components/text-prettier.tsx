@@ -1,8 +1,8 @@
+import type React from "react";
+import type { ReactNode } from "react";
 import Link from "@/components/link.tsx";
 import WechatEmoji from "@/components/wechat-emoji.tsx";
 import WechatEmojiTable from "@/lib/wechat-emojis.ts";
-import type React from "react";
-import type { ReactNode } from "react";
 
 interface TextPrettierProps extends React.HTMLProps<HTMLParagraphElement> {
 	text: string;
@@ -85,7 +85,7 @@ export default function TextPrettier({
 		];
 		paragraphChildren = paragraphChildren.flatMap((segment) => {
 			if (typeof segment === "string") {
-				return [...segment]
+				return Array.from(segment)
 					.map((char, index, string) => {
 						if (index === string.length - 1) {
 							if (punctuation.includes(char)) {

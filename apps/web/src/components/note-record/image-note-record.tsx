@@ -1,8 +1,11 @@
+import {
+	ImageNoteRecordType,
+	NoteOpenMessageEntity,
+	OpenMessageType,
+} from "@repo/types";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { RecordImageQueryOptions } from "@/lib/fetchers/record.ts";
 import { Route } from "@/routes/$accountId/route.tsx";
-import { ImageNoteRecordType, OpenMessageType } from "@/schema";
-import { NoteOpenMessageEntity } from "@/schema/open-message.ts";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import Image from "../image.tsx";
 
 interface ImageNoteRecordProps extends React.HTMLAttributes<HTMLElement> {

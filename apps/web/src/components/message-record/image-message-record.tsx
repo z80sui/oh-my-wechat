@@ -1,12 +1,12 @@
+import { useInViewport } from "@mantine/hooks";
+import type { MessageType } from "@repo/types";
+import { ImageMessageRecordType } from "@repo/types";
+import { useQuery } from "@tanstack/react-query";
+import type React from "react";
 import AutoResolutionFallbackImage from "@/components/auto-resolution-fallback-image.tsx";
 import { RecordImageQueryOptions } from "@/lib/fetchers/record";
 import { cn } from "@/lib/utils.ts";
 import { Route } from "@/routes/$accountId/route.tsx";
-import type { MessageType } from "@/schema";
-import { ImageMessageRecordType } from "@/schema/message-record.ts";
-import { useInViewport } from "@mantine/hooks";
-import { useQuery } from "@tanstack/react-query";
-import type React from "react";
 
 interface ImageRecordProps extends React.HTMLAttributes<HTMLDivElement> {
 	message: MessageType;

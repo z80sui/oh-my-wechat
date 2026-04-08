@@ -1,10 +1,10 @@
-import { GetUserRequest } from "@/adapters/adapter.ts";
-import { getDataAdapter } from "@/lib/data-adapter.ts";
-import type { UserType } from "@/schema";
+import type { UserType } from "@repo/types";
+import { GetUserRequest } from "@repo/types/adapter";
 import type {
 	UseQueryOptions,
 	UseSuspenseQueryOptions,
 } from "@tanstack/react-query";
+import { getDataAdapter } from "@/lib/data-adapter.ts";
 
 export function UserListQueryOptions(
 	accountId: string,

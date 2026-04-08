@@ -1,5 +1,5 @@
+import { MessageDirection } from "@repo/types";
 import MessageInlineWrapper from "@/components/message-inline-wrapper.tsx";
-import { MessageDirection } from "@/schema";
 import type { RedEnvelopeMessageProps } from "./types";
 
 export function AAMessageAbstract({

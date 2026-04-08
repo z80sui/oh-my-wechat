@@ -1,5 +1,5 @@
+import { MessageDirection } from "@repo/types";
 import { CallIncoming, CallOutgoing } from "@/components/icon.tsx";
-import { MessageDirection } from "@/schema";
 import type { ChatroomVoipMessageProps } from "./types.ts";
 
 export function ChatroomVoipMessageDefault({

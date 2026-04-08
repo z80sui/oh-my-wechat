@@ -1,7 +1,6 @@
-import { OpenMessageType } from "@/schema";
-import type { ScanResultOpenMessageEntity } from "@/schema/open-message";
+import type { ScanResultOpenMessageEntity } from "@repo/types";
+import { OpenMessageType } from "@repo/types";
 
-export interface ScanResultMessageProps
-	extends React.HTMLAttributes<HTMLElement> {
+export interface ScanResultMessageProps extends React.HTMLAttributes<HTMLElement> {
 	message: OpenMessageType<ScanResultOpenMessageEntity>;
 }
