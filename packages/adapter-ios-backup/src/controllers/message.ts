@@ -589,7 +589,7 @@ export async function all(...inputs: AllInput): AllOutput {
 									? and(...baseRightQueryWhereSegmentConditions)
 									: undefined;
 
-							const baseLeftQuery = database
+							const baseLeftSubquery = database
 								.select(chatTableSelect(chatTable))
 								.from(chatTable)
 								.where(baseLeftQueryWhereSegment)
@@ -597,7 +597,7 @@ export async function all(...inputs: AllInput): AllOutput {
 								.limit(query_limit)
 								.as("baseLeftQuery");
 
-							const baseRightQuery = database
+							const baseRightSubquery = database
 								.select(chatTableSelect(chatTable))
 								.from(chatTable)
 								.where(baseRightQueryWhereSegment)
@@ -605,10 +605,10 @@ export async function all(...inputs: AllInput): AllOutput {
 								.limit(query_limit)
 								.as("baseRightQuery");
 
-							// @ts-ignore
-							const baseQuery = unionAll(baseLeftQuery, baseRightQuery).as(
-								"baseQuery",
-							);
+							const baseQuery = unionAll(
+								database.select().from(baseLeftSubquery),
+								database.select().from(baseRightSubquery),
+							).as("baseQuery");
 
 							const query = database
 								.select()
