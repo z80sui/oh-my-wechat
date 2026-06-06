@@ -1,5 +1,5 @@
+import { ContactType } from "@repo/types";
 import specialBrandIdRaw from "@/assets/specialBrandUserNames.csv?raw";
-import { ContactType } from "@/schema";
 
 const specialBrandIds = specialBrandIdRaw.split("\n").map((i) => i.trim());
 

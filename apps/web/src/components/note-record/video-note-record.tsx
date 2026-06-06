@@ -1,8 +1,12 @@
+import {
+	NoteOpenMessageEntity,
+	OpenMessageType,
+	VideoNoteRecordType,
+} from "@repo/types";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useResolveMessageFile } from "@/hooks/use-resolve-message-file.ts";
 import { RecordVideoQueryOptions } from "@/lib/fetchers/record.ts";
 import { Route } from "@/routes/$accountId/route.tsx";
-import { OpenMessageType, VideoNoteRecordType } from "@/schema";
-import { NoteOpenMessageEntity } from "@/schema/open-message.ts";
-import { useSuspenseQuery } from "@tanstack/react-query";
 
 interface VideoNoteRecordProps extends React.HTMLAttributes<HTMLElement> {
 	message: OpenMessageType<NoteOpenMessageEntity>;
@@ -26,14 +30,12 @@ export default function VideoNoteRecord({
 		}),
 	);
 
+	const videoSrc = useResolveMessageFile(video?.uri);
+	const coverSrc = useResolveMessageFile(video?.cover?.uri);
+
 	return (
 		<div className={className} {...props}>
-			<video
-				src={video.src}
-				poster={video.cover?.src}
-				controls
-				className="w-full"
-			/>
+			<video src={videoSrc} poster={coverSrc} controls className="w-full" />
 		</div>
 	);
 }

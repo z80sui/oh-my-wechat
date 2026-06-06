@@ -1,8 +1,6 @@
-import { ChatType } from "@/schema";
-
-import photoCollapsedChats from "/public/images/avatar/collapsed_chats.png";
-import photoServiceAccount from "/public/images/avatar/brandservicesessionholder.png";
-
+import photoServiceAccount from "/images/avatar/brandservicesessionholder.png";
+import photoCollapsedChats from "/images/avatar/collapsed_chats.png";
+import { ChatType } from "@repo/types";
 import specialBrandIdRaw from "@/assets/specialBrandUserNames.csv?raw";
 const specialBrandIds = specialBrandIdRaw.split("\n").map((i) => i.trim());
 

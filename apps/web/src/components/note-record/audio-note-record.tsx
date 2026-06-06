@@ -1,6 +1,9 @@
+import {
+	AudioNoteRecordType,
+	NoteOpenMessageEntity,
+	OpenMessageType,
+} from "@repo/types";
 import { cn } from "@/lib/utils.ts";
-import { AudioNoteRecordType, OpenMessageType } from "@/schema";
-import { NoteOpenMessageEntity } from "@/schema/open-message.ts";
 
 interface AudioNoteRecordProps extends React.HTMLAttributes<HTMLElement> {
 	message: OpenMessageType<NoteOpenMessageEntity>;

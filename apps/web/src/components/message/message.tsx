@@ -1,38 +1,42 @@
-import ChatroomVoipMessage from "@/components/message/chatroom-voip-message.tsx";
-import ContactMessage from "@/components/message/contact-message.tsx";
-import ImageMessage from "@/components/message/image-message.tsx";
-import LocationMessage from "@/components/message/location-message.tsx";
-import MailMessage from "@/components/message/mail-message.tsx";
-import MicroVideoMessage from "@/components/message/micro-video-message.tsx";
-import StickerMessage from "@/components/message/sticker-message.tsx";
-import SystemExtendedMessage from "@/components/message/system-extended-message.tsx";
-import SystemMessage from "@/components/message/system-message.tsx";
-import TextMessage from "@/components/message/text-message.tsx";
-import VideoMessage from "@/components/message/video-message.tsx";
-import VoiceMessage from "@/components/message/voice-message.tsx";
-import VoipMessage from "@/components/message/voip-message.tsx";
-import WeComContactMessage from "@/components/message/wecom-contact-message.tsx";
-import OpenMessage from "@/components/open-message/open-message.tsx";
-import dialogClasses from "@/components/ui/dialog.module.css";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { AccountSuspenseQueryOptions } from "@/lib/fetchers/account.ts";
-import { cn } from "@/lib/utils.ts";
-import { Route } from "@/routes/$accountId/route.tsx";
-import { MessageDirection, MessageTypeEnum, type MessageType } from "@/schema";
 import { Dialog } from "@base-ui/react";
+import {
+	MessageDirection,
+	MessageTypeEnum,
+	OpenMessageType,
+	type MessageType,
+} from "@repo/types";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type React from "react";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { useAccount } from "@/components/account-provider.tsx";
+import {
+	ChatroomVoipMessage,
+	ContactMessage,
+	ImageMessage,
+	LocationMessage,
+	MailMessage,
+	MicroVideoMessage,
+	OpenMessage,
+	StickerMessage,
+	SystemExtendedMessage,
+	SystemMessage,
+	TextMessage,
+	VideoMessage,
+	VoiceMessage,
+	VoipMessage,
+	WeComContactMessage,
+} from "@/components/message";
+import dialogClasses from "@/components/ui/dialog.module.css";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { AccountSuspenseQueryOptions } from "@/lib/fetchers/account.ts";
+import { cn } from "@/lib/utils.ts";
 import { CircleQuestionmarkSolid } from "../icon";
 import { Card, CardContent, CardFooter, CardIndicator } from "../ui/card";
 
-// TODO
-export interface MessageProp<Message = MessageType, Variant = undefined> {
-	message: Message;
-	variant?: "default" | "referenced" | "abstract" | Variant;
-	showPhoto?: boolean;
-	showUsername?: boolean;
+interface MessageProp {
+	message: MessageType;
+	variant: "default" | "referenced" | "abstract";
 }
 
 export default function Message({
@@ -40,7 +44,8 @@ export default function Message({
 	variant = "default",
 	...props
 }: MessageProp & React.HTMLAttributes<HTMLElement>) {
-	const { accountId } = Route.useParams();
+	const { accountId } = useAccount();
+
 	const { data: account } = useSuspenseQuery(
 		AccountSuspenseQueryOptions({ account: { id: accountId } }),
 	);
@@ -65,11 +70,11 @@ export default function Message({
 		>
 			<Suspense>
 				<MessageComponent
+					message={message}
+					variant={variant}
 					onDoubleClick={() => {
 						if (import.meta.env.DEV) console.log(message);
 					}}
-					message={message}
-					variant={variant}
 					{...props}
 				/>
 			</Suspense>
@@ -80,56 +85,98 @@ export default function Message({
 function MessageComponent({ message, variant, ...props }: MessageProp) {
 	switch (message.type) {
 		case MessageTypeEnum.TEXT:
-			return <TextMessage message={message} variant={variant} {...props} />;
+			return (
+				<TextMessage.Auto message={message} variant={variant} {...props} />
+			);
 
 		case MessageTypeEnum.IMAGE:
-			return <ImageMessage message={message} variant={variant} {...props} />;
+			return (
+				<ImageMessage.Auto message={message} variant={variant} {...props} />
+			);
 
 		case MessageTypeEnum.VOICE:
-			return <VoiceMessage message={message} variant={variant} {...props} />;
+			return (
+				<VoiceMessage.Auto message={message} variant={variant} {...props} />
+			);
 
 		case MessageTypeEnum.MAIL:
-			return <MailMessage message={message} variant={variant} {...props} />;
+			return (
+				<MailMessage.Auto message={message} variant={variant} {...props} />
+			);
 
 		case MessageTypeEnum.CONTACT:
-			return <ContactMessage message={message} variant={variant} {...props} />;
+			return (
+				<ContactMessage.Auto message={message} variant={variant} {...props} />
+			);
 
 		case MessageTypeEnum.VIDEO:
-			return <VideoMessage message={message} variant={variant} {...props} />;
+			return (
+				<VideoMessage.Auto message={message} variant={variant} {...props} />
+			);
 
 		case MessageTypeEnum.MICROVIDEO:
 			return (
-				<MicroVideoMessage message={message} variant={variant} {...props} />
+				<MicroVideoMessage.Auto
+					message={message}
+					variant={variant}
+					{...props}
+				/>
 			);
 
 		case MessageTypeEnum.STICKER:
-			return <StickerMessage message={message} variant={variant} {...props} />;
+			return (
+				<StickerMessage.Auto message={message} variant={variant} {...props} />
+			);
 
 		case MessageTypeEnum.LOCATION:
-			return <LocationMessage message={message} variant={variant} {...props} />;
+			return (
+				<LocationMessage.Auto message={message} variant={variant} {...props} />
+			);
 
 		case MessageTypeEnum.APP:
-			return <OpenMessage message={message} variant={variant} {...props} />;
+			return (
+				<OpenMessage.Auto
+					message={message as OpenMessageType<{ type: number }>}
+					variant={variant}
+					{...props}
+				/>
+			);
 
 		case MessageTypeEnum.VOIP:
-			return <VoipMessage message={message} variant={variant} {...props} />;
+			return (
+				<VoipMessage.Auto message={message} variant={variant} {...props} />
+			);
 
 		case MessageTypeEnum.GROUP_VOIP:
 			return (
-				<ChatroomVoipMessage message={message} variant={variant} {...props} />
+				<ChatroomVoipMessage.Auto
+					message={message}
+					variant={variant}
+					{...props}
+				/>
 			);
 
 		case MessageTypeEnum.WECOM_CONTACT:
 			return (
-				<WeComContactMessage message={message} variant={variant} {...props} />
+				<WeComContactMessage.Auto
+					message={message}
+					variant={variant}
+					{...props}
+				/>
 			);
 
 		case MessageTypeEnum.SYSTEM:
-			return <SystemMessage message={message} variant={variant} {...props} />;
+			return (
+				<SystemMessage.Auto message={message} variant={variant} {...props} />
+			);
 
 		case MessageTypeEnum.SYSTEM_EXTENDED:
 			return (
-				<SystemExtendedMessage message={message} variant={variant} {...props} />
+				<SystemExtendedMessage.Auto
+					message={message}
+					variant={variant}
+					{...props}
+				/>
 			);
 
 		case MessageTypeEnum.OMW_ERROR:

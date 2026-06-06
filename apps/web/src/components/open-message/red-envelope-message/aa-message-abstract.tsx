@@ -1,0 +1,17 @@
+import { MessageDirection } from "@repo/types";
+import MessageInlineWrapper from "@/components/message-inline-wrapper.tsx";
+import type { RedEnvelopeMessageProps } from "./types";
+
+export function AAMessageAbstract({
+	message,
+	...props
+}: Omit<RedEnvelopeMessageProps, "accountId">) {
+	return (
+		<MessageInlineWrapper message={message} {...props}>
+			[AA 收款]{" "}
+			{message.direction === MessageDirection.outgoing
+				? message.message_entity.msg.appmsg.wcpayinfo.sendertitle
+				: message.message_entity.msg.appmsg.wcpayinfo.receivertitle}
+		</MessageInlineWrapper>
+	);
+}

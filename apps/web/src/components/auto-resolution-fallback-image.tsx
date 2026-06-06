@@ -1,6 +1,9 @@
-import Image from "@/components/image.tsx";
-import type { ImageInfo } from "@/schema";
+import type { ImageInfo } from "@repo/types";
 import React, { useEffect, useState } from "react";
+import Image from "@/components/image.tsx";
+import { useResolveMessageFile } from "@/hooks/use-resolve-message-file.ts";
+
+const resolutionOrder: (keyof ImageInfo)[] = ["hd", "regular", "thumbnail"];
 
 export default function AutoResolutionFallbackImage({
 	image,
@@ -10,12 +13,13 @@ export default function AutoResolutionFallbackImage({
 	image?: ImageInfo | null;
 	ref?: React.Ref<HTMLImageElement>;
 } & React.ImgHTMLAttributes<HTMLImageElement>) {
-	const resolutionOrder: (keyof ImageInfo)[] = ["hd", "regular", "thumbnail"];
-
 	const [displayResolutionIndex, setDisplayResolutionIndex] = useState(-1);
 
 	useEffect(() => {
-		if (!image) return;
+		if (!image) {
+			setDisplayResolutionIndex(-1);
+			return;
+		}
 		const firstResolutionIndex = resolutionOrder.findIndex(
 			(resolution) => image && image[resolution],
 		);
@@ -30,6 +34,13 @@ export default function AutoResolutionFallbackImage({
 		thumbnail: "",
 		hd: "",
 	});
+
+	const currentEntry =
+		displayResolutionIndex >= 0
+			? image?.[resolutionOrder[displayResolutionIndex]]
+			: undefined;
+
+	const resolvedSrc = useResolveMessageFile(currentEntry?.uri);
 
 	const onImageError = (
 		error: React.SyntheticEvent<HTMLImageElement, Event>,
@@ -53,9 +64,9 @@ export default function AutoResolutionFallbackImage({
 	return (
 		<Image
 			ref={ref}
-			src={image?.[resolutionOrder[displayResolutionIndex]]?.src}
-			width={image?.[resolutionOrder[displayResolutionIndex]]?.width}
-			height={image?.[resolutionOrder[displayResolutionIndex]]?.height}
+			src={resolvedSrc}
+			width={currentEntry?.width}
+			height={currentEntry?.height}
 			loading="lazy"
 			onError={onImageError}
 			{...props}

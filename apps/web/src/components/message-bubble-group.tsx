@@ -1,29 +1,26 @@
-import User from "@/components/user.tsx";
-import { cn } from "@/lib/utils.ts";
-import type { MessageType } from "@/schema";
-import { MessageDirection, type UserType } from "@/schema";
+import { MessageDirection, type UserType, type MessageType } from "@repo/types";
 import type React from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { useChatUiConfig } from "@/components/chat-ui-config-provider.tsx";
+import User from "@/components/user.tsx";
+import { cn } from "@/lib/utils.ts";
 import Message from "./message/message.tsx";
 
 interface BubbleGroupProps extends React.HTMLAttributes<HTMLDivElement> {
 	user: UserType;
 	messages?: MessageType[];
-
-	showPhoto?: boolean;
-	showUsername?: boolean;
 }
 
 export function MessageBubbleGroup({
 	user,
 	messages = [],
-	showPhoto = true,
-	showUsername = false,
 
 	className,
 	children,
 	...props
 }: BubbleGroupProps) {
+	const { showUsername, showPhoto } = useChatUiConfig();
+
 	const messageDirection = messages[0]?.direction ?? MessageDirection.incoming;
 
 	return (
@@ -65,9 +62,10 @@ export function MessageBubbleGroup({
 						<User.Username
 							variant="default"
 							user={user}
-							className={
-								"mt-px mb-[7px] mx-0.5 text-[13px] leading-[14px] text-neutral-500"
-							}
+							className={cn(
+								"mt-px mb-[7px] mx-0.5 text-[13px] leading-[14px] text-neutral-500",
+								"peer",
+							)}
 						/>
 					)}
 					<div
@@ -75,12 +73,17 @@ export function MessageBubbleGroup({
 							"flex flex-col gap-2",
 							["items-end", "items-start"][messageDirection],
 							"[&>*:nth-child(n+2).bubble-tail-l]:bubble-tail-none [&>*:nth-child(n+2).bubble-tail-r]:bubble-tail-none",
+							"peer-has-[+div>div:nth-child(1)[data-red-envelope-decoration=true]]:-mt-[8.33333333%]",
 							className,
 						)}
 						{...props}
 					>
 						{messages.map((message, index) => (
-							<Message key={`(${index})${message.id}`} message={message} />
+							<Message
+								key={`(${index})${message.id}`}
+								message={message}
+								variant="default"
+							/>
 						))}
 						{children}
 					</div>

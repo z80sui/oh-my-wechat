@@ -1,0 +1,21 @@
+{
+	"name": "@repo/types",
+	"version": "0.0.0",
+	"private": true,
+	"license": "MIT",
+	"exports": {
+		".": "./src/message/index.ts",
+		"./adapter": "./src/adapter/index.ts",
+		"./vite": {
+			"types": "./src/vite/index.ts",
+			"default": "./src/vite/index.mjs"
+		}
+	},
+	"dependencies": {
+		"@bufbuild/protobuf": "catalog:"
+	},
+	"devDependencies": {
+		"@repo/typescript-config": "workspace:*",
+		"vite": "catalog:"
+	}
+}

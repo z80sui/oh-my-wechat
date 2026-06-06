@@ -1,12 +1,13 @@
+import { useInViewport } from "@mantine/hooks";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
+import type React from "react";
+import { ChatUiConfigProvider } from "@/components/chat-ui-config-provider.tsx";
 import Message from "@/components/message/message.tsx";
 import { useMiniRouter } from "@/components/mini-router";
 import { Avatar } from "@/components/ui/avatar.tsx";
 import { LastMessageQueryOptions } from "@/lib/fetchers/message";
 import { cn, formatDateTime } from "@/lib/utils.ts";
-import { useInViewport } from "@mantine/hooks";
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
-import type React from "react";
 import { Route } from "../../route";
 import { ChatGroupListMiniRouteState } from "./chat-group-list";
 import { ChatListChatGroupItem, ChatListChatItem } from "./use-chat-list";
@@ -109,12 +110,14 @@ export default function ChatListItem({
 						className={"min-h-[1.5em] text-sm line-clamp-1 text-neutral-600"}
 					>
 						{last_message && (
-							<Message
-								variant="abstract"
-								message={last_message}
-								showUsername={chatListItem.chat.type === "chatroom"}
-								className={""}
-							/>
+							<ChatUiConfigProvider
+								value={{
+									showUsername: chatListItem.chat.type === "chatroom",
+									showPhoto: false,
+								}}
+							>
+								<Message variant="abstract" message={last_message} />
+							</ChatUiConfigProvider>
 						)}
 					</div>
 				</div>

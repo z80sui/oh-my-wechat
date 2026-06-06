@@ -1,17 +1,17 @@
+import { Dialog } from "@base-ui/react";
+import type { MessageType, NoteEntity, OpenMessageType } from "@repo/types";
+import {
+	MessageRecordBaseType,
+	NoteMessageRecordType,
+	NoteOpenMessageEntity,
+} from "@repo/types";
+import { useQuery } from "@tanstack/react-query";
+import type React from "react";
+import { Suspense, useMemo, useState } from "react";
 import { RecordFileQueryOptions } from "@/lib/fetchers/record.ts";
 import queryClient from "@/lib/query-client";
 import { cn, decodeUnicodeReferences } from "@/lib/utils.ts";
 import { Route } from "@/routes/$accountId/route.tsx";
-import type { MessageType, NoteEntity, OpenMessageType } from "@/schema";
-import {
-	MessageRecordBaseType,
-	NoteMessageRecordType,
-} from "@/schema/message-record.ts";
-import { NoteOpenMessageEntity } from "@/schema/open-message.ts";
-import { Dialog } from "@base-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import type React from "react";
-import { Suspense, useMemo, useState } from "react";
 import { LoaderIcon } from "../icon";
 import NoteDocument from "../note-document/note-document";
 import NoteDocumentDialogContent from "../note-document/note-document-dialog";
@@ -74,7 +74,7 @@ function NoteRecordDefault({
 		!isNoteDocumentPending && !noteDocumentFile ? true : undefined;
 	const [isNoteDocumentDialogOpen, setIsNoteDocumentDialogOpen] =
 		useState(false);
-	const handleOpenNoteDocument = () => {
+	const handleOpenNoteDocument = () =>
 		queryClient
 			.ensureQueryData(NoteDocumentQueryOptions)
 			.then((noteDocumentFile) => {
@@ -82,7 +82,6 @@ function NoteRecordDefault({
 					setIsNoteDocumentDialogOpen(true);
 				}
 			});
-	};
 
 	const renderNoteDocument = useMemo(() => {
 		if (!noteDocumentFile) return null;
