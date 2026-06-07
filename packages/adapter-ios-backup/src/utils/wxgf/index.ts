@@ -42,7 +42,7 @@ loadFFmpeg()
 		console.error(error);
 	});
 
-export async function convertWxgfToJpg(wxgf: Uint8Array): Promise<string> {
+export async function convertWxgfToImage(wxgf: Uint8Array): Promise<string> {
 	return await new Promise((resolve, reject) => {
 		wxgfQueue.addItem({
 			wxgf,

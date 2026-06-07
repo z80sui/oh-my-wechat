@@ -120,8 +120,19 @@ const FFMPEG_OUTPUT_FILENAME = "wxgf_output.png";
 
 /**
  * Convert HEVC data to PNG using FFmpeg.
- * HEVC from WXGF uses YUV420P(tv) = limited range (16-235).
- * PNG expects full range (0-255). Scale filter converts range to fix color shift.
+ *
+ * Colour handling: the YUV→RGB conversion must honour the stream's actual
+ * range and matrix.
+ * - Range: WeChat encodes these frames with either limited (tv) or full (pc)
+ *   range — it is NOT fixed. We let ffmpeg read `video_full_range_flag` from
+ *   the bitstream's SPS automatically (do NOT override `in_range`); the decoder
+ *   already parses this correctly.
+ * - Matrix: WeChat uses BT.601, but the bitstream often leaves matrix_coeffs
+ *   unspecified, in which case libswscale would otherwise guess BT.709 for
+ *   HD-sized frames and shift colours. So we pin it to BT.601 (`smpte170m`).
+ *
+ * Output is full-range RGB PNG.
+ *
  * 使用 PNG 而非 JPG，避免 mjpeg 编码器触发内存问题。
  */
 export async function convertHevcToImage(
@@ -137,7 +148,7 @@ export async function convertHevcToImage(
 			"-vframes",
 			"1",
 			"-vf",
-			"scale=in_range=tv:out_range=full",
+			"scale=out_range=full:in_color_matrix=smpte170m",
 			"-f",
 			"image2",
 			FFMPEG_OUTPUT_FILENAME,
